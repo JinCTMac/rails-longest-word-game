@@ -1,0 +1,21 @@
+<h1>Result</h1>
+
+<div class="word-container">
+<p>
+    <% def dictionary(attempt)%>
+      <% url = "https://wagon-dictionary.herokuapp.com/#{attempt}" %>
+      <% dictionary_api = URI.open(url).read %>
+      <% JSON.parse(dictionary_api) %>
+    <% end %>
+
+    <% if dictionary(@word)["found"] == false %>
+    Sorry but <strong><%=@word%></strong> does not seem to be a valid english word...
+    <% elsif @word.upcase.chars.all? { |letter| @word.upcase.count(letter) <= params[:letters].split.count(letter) } %>
+    <strong>Congratulations!</strong> <%=@word%> is a valid English word!
+    <% else %>
+    Sorry but <%=@word%> can not be built out of <%=params[:letters]%>
+    <% end %>
+</p>
+</div>
+
+<%= link_to "Play Again", new_path %>
